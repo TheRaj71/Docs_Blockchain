@@ -1,103 +1,114 @@
 ---
 interface Props {
-	class: string;
-	isFancy: boolean;
+  class: string;
+  isFancy: boolean;
 }
 
 const svgW = 640;
 const svgH = 220;
-const dotGap = 30;
+const dotGap = 20; // Reduced gap for more dense pattern
 const amountOfDots = Math.ceil(svgW / dotGap) * Math.ceil(svgH / dotGap);
 
 const { class: className, isFancy, ...rest } = Astro.props;
 ---
 <article class:list={['card', isFancy ? 'card--fancy' : '', className]} {...rest}>
-	<slot /> 
-	{
-		isFancy && (
-			<svg viewBox={`0 0 ${svgW} ${svgH}`} class="card__bg">
-				
-				{Array.from({ length: amountOfDots }).map((_, i) => (
-					<circle
-						class="card__dot"
-						cx={dotGap * (i % Math.ceil(svgW / dotGap))}
-						cy={dotGap * Math.floor(i / Math.ceil(svgW / dotGap))}
-						r={2.5}
-						style={`--rnd: ${Math.random()};`}
-						fill="var(--rc-cardDecoration, orange)"
-					/>
-				))}
-			</svg>
-		)
-	}
+  <slot />
+  {
+    isFancy && (
+      <svg viewBox={`0 0 ${svgW} ${svgH}`} class="card__bg">
+        {Array.from({ length: amountOfDots }).map((_, i) => (
+          <circle
+            class="card__dot"
+            cx={dotGap * (i % Math.ceil(svgW / dotGap))}
+            cy={dotGap * Math.floor(i / Math.ceil(svgW / dotGap))}
+            r={1.5}
+            style={`--rnd: ${Math.random()};`}
+            fill="var(--rc-cardDecoration, #4f46e5)"
+          />
+        ))}
+      </svg>
+    )
+  }
 </article>
 
 <style is:global>
-	.card {
-		position: relative;
-		--bg: var(--rc-card);
-		--color: var(--rc-onCard);
+  .card {
+    position: relative;
+    --bg: rgba(17, 24, 39, 0.8);
+    --color: #ffffff;
+    
+    background: var(--bg);
+    color: var(--color);
+    
+    border-radius: 1.5rem;
+    min-height: 35rem;
+    padding: var(--rs-card-y) var(--rs-card-x);
+    box-sizing: border-box;
+    
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
 
-		background: var(--bg);
-		color: var(--rc-color);
-
-		border-radius: 2rem;
-		min-height: 35rem;
-		padding: var(--rs-card-y) var(--rs-card-x);
-		box-sizing: border-box;
-
-    transition: 100ms background linear;
-	}
-	
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+  
   @media (max-width: 500px) {
-		.card {
-			min-height: 30rem;
-		}
-	}
-	.card + .card {
-		margin-top: var(--rs-card-y);
-	}
+    .card {
+      min-height: 30rem;
+    }
+  }
 
-	.card--fancy {
-		box-shadow: inset 0 0 0 .15rem rgba(255,255,255,.05);
-		overflow: hidden;
-	}
+  .card + .card {
+    margin-top: var(--rs-card-y);
+  }
 
-	.card--fancy .h3 {
-		margin-top: 1em;
-		margin-bottom: 0.8em;
-	}
+  .card--fancy {
+    box-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
 
-	.card__dot {
-		animation: fade 2s ease-in-out infinite alternate;
-		animation-delay: calc(var(--rnd) * -4s);
-		transform: scale(calc(.1 + var(--rnd) * .9));
-		transform-origin: center;
-		transform-box: fill-box;
-	}
+  .card--fancy .h3 {
+    margin-top: 1em;
+    margin-bottom: 0.8em;
+    font-weight: 700;
+    background: linear-gradient(45deg, #4f46e5, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
-	.card__bg {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 200%;
-		height: 100%;
-		object-fit: cover;
-		pointer-events: none;
-	}
+  .card__dot {
+    animation: pulse 3s ease-in-out infinite alternate;
+    animation-delay: calc(var(--rnd) * -4s);
+    transform-origin: center;
+    transform-box: fill-box;
+    opacity: 0.6;
+  }
 
-	.security-features__item--fill .card__bg {
-		width: 100%;
-	}
+  .card__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    opacity: 0.1;
+  }
 
-	@keyframes fade {
-		0%, 100% {
-			opacity: 0;
-			transform: scale(calc(.1 + var(--rnd) * .9));
-		}
-		50% {
-			opacity: .9;
-			transform: scale(calc(.1 + var(--rnd) * .1));
-		}
-	}
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.2;
+      transform: scale(calc(0.1 + var(--rnd) * 0.9));
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(calc(0.5 + var(--rnd) * 0.5));
+    }
+  }
 </style>
