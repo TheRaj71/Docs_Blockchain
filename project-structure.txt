@@ -1,0 +1,5 @@
+ic-docutrack/
+├── backend/           # Rust canister code
+├── frontend/         # SvelteKit main application
+├── landing-page/     # Astro marketing site
+└── dfx.json         # Internet Computer configuration
