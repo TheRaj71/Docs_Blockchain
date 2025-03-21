@@ -27,7 +27,7 @@
 <nav class="bg-background-200 rounded-b-3xl relative z-20">
   <div class="flex h-14 md:h-16 items-center max-w-5xl mx-auto px-4">
     <a href="/" class="shrink-0">
-      <span class="text-2xl font-bold text-accent-100 hidden lg:block">DocuTrack</span>
+      <span class="text-2xl font-bold text-accent-100 hidden lg:block">Dockblock</span>
       <span class="text-xl font-bold text-accent-100 lg:hidden">DT</span>
     </a>
 
